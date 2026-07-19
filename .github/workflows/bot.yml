@@ -1,24 +1,30 @@
-import asyncio
-import os
-from aiogram import Bot, Dispatcher
-from aiogram.filters import Command
-from aiogram.types import Message
+name: Run Telegram Bot
 
-TOKEN = os.getenv("8824589681:AAE1tATKaWCp8ltGwDh0k0u8W9Qs-jEyz-8")
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
-bot = Bot(TOKEN)
-dp = Dispatcher()
+jobs:
+  bot:
+    runs-on: ubuntu-latest
 
-@dp.message(Command("start"))
-async def start(message: Message):
-    await message.answer(
-        "✅ Majlis boti ishga tushdi.\n"
-        "Admin /majlis HH:MM buyrug'i orqali majlis vaqtini belgilashi mumkin."
-    )
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-async def main():
-    print("Bot ishga tushdi...")
-    await dp.start_polling(bot)
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-if __name__ == "__main__":
-    asyncio.run(main())
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run bot
+        env:
+          BOT_TOKEN: ${{ 8824589681:AAE1tATKaWCp8ltGwDh0k0u8W9Qs-jEyz-8 }}
+        run: python bot.py
