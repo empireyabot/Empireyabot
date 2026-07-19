@@ -10,10 +10,7 @@ dp = Dispatcher()
 
 @dp.message(Command("start"))
 async def start(message: Message):
-    await message.answer(
-        "✅ Majlis boti ishga tushdi.\n"
-        "Admin /majlis HH:MM buyrug'i orqali majlis vaqtini belgilashi mumkin."
-    )
+    await message.answer("✅ Bot ishlayapti!")
 
 async def main():
     print("Bot ishga tushdi...")
